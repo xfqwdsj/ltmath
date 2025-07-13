@@ -59,8 +59,10 @@ sealed class Angle : Comparable<Angle> {
         }.value
 
     /**
-     * Returns a normalized angle, ensuring the value is within the range of 0 to 360 degrees for degrees
-     * or 0 to 2π radians for radians.
+     * Returns a normalized angle, ensuring the value is within [0, 360) degrees for degrees
+     * or [0, 2π) radians for radians.
+     *
+     * For negative values, the result is wrapped into the positive range.
      */
     val normalized
         get() = when (this) {
