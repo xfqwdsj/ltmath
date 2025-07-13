@@ -1,6 +1,7 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -19,7 +20,11 @@ tasks.withType<Sign>().configureEach { dependsOn(htmlJar.get()) }
 tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
 
 kotlin {
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+    }
     androidNativeX64()
     androidNativeX86()
     androidNativeArm64()
@@ -103,4 +108,4 @@ signing {
 }
 
 group = "top.ltfan.math"
-version = "0.1.0"
+version = "0.1.1"
