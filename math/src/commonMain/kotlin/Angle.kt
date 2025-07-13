@@ -11,11 +11,12 @@ sealed class Angle : Comparable<Angle> {
      *
      * @property value The angle value in degrees.
      */
-    data class Degrees(val value: Double) : Angle() {
+    @ConsistentCopyVisibility
+    data class Degrees internal constructor(val value: Double) : Angle() {
         /**
          * Constructs a [Degrees] instance from a [Number].
          */
-        constructor(value: Number) : this(value.toDouble())
+        internal constructor(value: Number) : this(value.toDouble())
 
         /**
          * Converts this angle to radians.
@@ -28,11 +29,12 @@ sealed class Angle : Comparable<Angle> {
      *
      * @property value The angle value in radians.
      */
-    data class Radians(val value: Double) : Angle() {
+    @ConsistentCopyVisibility
+    data class Radians internal constructor(val value: Double) : Angle() {
         /**
          * Constructs a [Radians] instance from a [Number].
          */
-        constructor(value: Number) : this(value.toDouble())
+        internal constructor(value: Number) : this(value.toDouble())
 
         /**
          * Converts this angle to degrees.
@@ -44,7 +46,7 @@ sealed class Angle : Comparable<Angle> {
      * Returns the angle's value in degrees.
      */
     val degrees
-        get() = when (this) {
+        inline get() = when (this) {
             is Degrees -> this
             is Radians -> toDegrees()
         }.value
@@ -53,7 +55,7 @@ sealed class Angle : Comparable<Angle> {
      * Returns the angle's value in radians.
      */
     val radians
-        get() = when (this) {
+        inline get() = when (this) {
             is Degrees -> toRadians()
             is Radians -> this
         }.value
@@ -94,12 +96,12 @@ sealed class Angle : Comparable<Angle> {
         /**
          * Creates an [Angle] from a value in degrees.
          */
-        fun fromDegrees(value: Number): Angle = Degrees(value.toDouble())
+        fun fromDegrees(value: Number): Angle = Degrees(value)
 
         /**
          * Creates an [Angle] from a value in radians.
          */
-        fun fromRadians(value: Number): Angle = Radians(value.toDouble())
+        fun fromRadians(value: Number): Angle = Radians(value)
     }
 
     /**
@@ -237,17 +239,17 @@ sealed class Angle : Comparable<Angle> {
 /**
  * Converts a [Number] to an [Angle] in degrees.
  */
-val Number.degrees get() = Angle.fromDegrees(this)
+val Number.degrees inline get() = Angle.fromDegrees(this)
 
 /**
  * Converts a [Number] to an [Angle] in radians.
  */
-val Number.radians get() = Angle.fromRadians(this)
+val Number.radians inline get() = Angle.fromRadians(this)
 
 /**
  * Converts a [Number] to an [Angle] in radians, using the value as a multiple of π.
  */
-val Number.piRadians get() = Angle.fromRadians(toDouble() * PI)
+val Number.piRadians inline get() = Angle.fromRadians(toDouble() * PI)
 
 /**
  * Multiplies an [Angle] by a [Number], returning a new [Angle].
@@ -257,19 +259,19 @@ operator fun Number.times(angle: Angle) = angle * this
 /**
  * Calculates the arcsine of a [Number] and returns an [Angle] in radians.
  */
-val Number.asin get() = Angle.fromRadians(asin(toDouble()))
+val Number.asin inline get() = asin(toDouble()).radians
 
 /**
  * Calculates the arccosine of a [Number] and returns an [Angle] in radians.
  */
-val Number.acos get() = Angle.fromRadians(acos(toDouble()))
+val Number.acos inline get() = acos(toDouble()).radians
 
 /**
  * Calculates the arctangent of a [Number] and returns an [Angle] in radians.
  */
-val Number.atan get() = Angle.fromRadians(atan(toDouble()))
+val Number.atan inline get() = atan(toDouble()).radians
 
 /**
  * Calculates the arctangent of the quotient of two [Number] values and returns an [Angle] in radians.
  */
-fun atan2(y: Number, x: Number) = Angle.fromRadians(kotlin.math.atan2(y.toDouble(), x.toDouble()))
+fun atan2(y: Number, x: Number) = kotlin.math.atan2(y.toDouble(), x.toDouble()).radians
