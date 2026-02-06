@@ -85,7 +85,7 @@ mavenPublishing {
     configure(
         KotlinMultiplatform(
             javadocJar = JavadocJar.Dokka(tasks.dokkaGeneratePublicationHtml),
-        )
+        ),
     )
 }
 
@@ -107,4 +107,4 @@ signing {
 }
 
 group = "top.ltfan.math"
-version = "0.1.2"
+version = "0.1.3"
